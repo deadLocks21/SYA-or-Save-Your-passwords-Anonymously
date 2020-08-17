@@ -1,5 +1,5 @@
 /// Class used to store a website
-class WebSite {
+class Website {
   /// Id of the row in the DB.
   int id;
   /// Name of the website.
@@ -11,7 +11,7 @@ class WebSite {
 
 
   /// Constructor of the class
-  WebSite(int id, String name, String login, String cryptedPassword) {
+  Website(int id, String name, String login, String cryptedPassword) {
     this.id = id;
     this.name = name;
     this.login = login;

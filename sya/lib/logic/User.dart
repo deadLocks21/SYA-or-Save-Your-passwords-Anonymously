@@ -5,7 +5,7 @@ class User {
   /// Password of the user.
   static String password;
   /// List of the different websites.
-  static List<WebSite> listOfWebSites;
+  static List<Website> listOfWebSites;
   /// Theme used by the user.
   static String theme;
 }
