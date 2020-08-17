@@ -1,4 +1,4 @@
-import 'package:sya/logic/WebSite.dart';
+import 'package:sya/logic/Website.dart';
 import 'DaoMaster.dart';
 import 'package:sya/logic/User.dart';
 
@@ -17,5 +17,4 @@ class WebSitesDao {
 
   /// Return the key.
   Future<String> getTheKey() async => ((await getWebSites())[0]).decrypt(User.password);
-  }
 }

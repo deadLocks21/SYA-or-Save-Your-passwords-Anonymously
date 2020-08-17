@@ -1,4 +1,4 @@
-import 'package:sya/logic/WebSite.dart';
+import 'package:sya/logic/Website.dart';
 
 /// Represent a user with the various useful information
 class User {
