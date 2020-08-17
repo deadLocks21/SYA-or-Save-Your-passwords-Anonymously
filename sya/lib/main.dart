@@ -34,11 +34,15 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             RaisedButton(
               child: Text("Add a website"),
-              onPressed: () async {await WebsitesDao.addAWebsite(new Website(1, "name", "login", "cryptedPassword"));},
+              onPressed: () async {await (new Website(1, "name", "login", "cryptedPassword")).add();},
             ),
             RaisedButton(
-              child: Text("Get a website"),
+              child: Text("Get websites"),
               onPressed: () async {print(await WebsitesDao.getWebsites());},
+            ),
+            RaisedButton(
+              child: Text("Modify a website"),
+              onPressed: () async {await (new Website(1, "name", "login", "crypted")).save();},
             ),
             RaisedButton(
               child: Text("Delete the table"),
