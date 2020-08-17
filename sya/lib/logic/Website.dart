@@ -1,3 +1,5 @@
+import 'package:sya/database/WebsitesDao.dart';
+
 /// Class used to store a website
 class Website {
   /// Id of the row in the DB.
@@ -26,12 +28,12 @@ class Website {
 
   /// Add the website.
   add() {
-    throw new Exception("Function not implemented !");
+    WebsitesDao.addAWebsite(this);
   }
 
   /// Save the website in the database.
   save() {
-    throw new Exception("Function not implemented !");
+    WebsitesDao.modifyAWebsite(this);
   }
 
   @override
