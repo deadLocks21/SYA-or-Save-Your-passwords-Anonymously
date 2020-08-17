@@ -18,25 +18,15 @@ class DaoMaster {
 
   /// Method called when the database is create.
   static Future onCreate(Database db, int version) async {
-    await db.execute('''
-CREATE TABLE IF NOT EXISTS Memory(themeColor TEXT,
-                                  defaultLogin TEXT
-                                 )''');
-
-    await db.execute('''
-CREATE TABLE IF NOT EXISTS User(login TEXT,
-                                hashedPassword TEXT
-                               )''');
+    await db.execute("CREATE TABLE IF NOT EXISTS Memory(themeColor TEXT)");
 
     await db.execute('''
 CREATE TABLE IF NOT EXISTS WebSite(name TEXT,
                                    login TEXT,
                                    cryptedPassword TEXT,
-                                   userID INT,
-                                   FOREIGN KEY (userID) REFERENCES User(rowid) 
                                   )''');
 
-    await db.execute("INSERT OR IGNORE INTO Memory(rowid, themeColor) VALUES (1, 'light')");
+    await db.execute("INSERT OR IGNORE INTO Memory(rowid, themeColor) VALUES (0, 'light')");
   }
 
   /// Close the database.
