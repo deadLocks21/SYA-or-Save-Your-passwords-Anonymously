@@ -42,7 +42,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             RaisedButton(
               child: Text("Delete the table"),
-              onPressed: () async {DaoMaster.delete("WebSite");},
+              onPressed: () async {
+//DaoMaster.delete("WebSite");
+await DaoMaster.open();
+await DaoMaster.db.execute("DROP TABLE IF EXISTS Website");
+await DaoMaster.db.execute("CREATE TABLE IF NOT EXISTS Website(name TEXT, login TEXT, cryptedPassword TEXT)");
+await DaoMaster.close();
+              },
             )
           ],
         ),

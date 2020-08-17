@@ -23,7 +23,7 @@ class DaoMaster {
     await db.execute('''
 CREATE TABLE IF NOT EXISTS Website(name TEXT,
                                    login TEXT,
-                                   cryptedPassword TEXT,
+                                   cryptedPassword TEXT
                                   )''');
 
     await db.execute("INSERT OR IGNORE INTO Memory(rowid, themeColor) VALUES (0, 'light')");
