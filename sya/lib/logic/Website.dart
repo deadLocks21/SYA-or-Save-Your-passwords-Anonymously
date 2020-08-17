@@ -33,4 +33,9 @@ class Website {
   save() {
     throw new Exception("Function not implemented !");
   }
+
+  @override
+  String toString() {
+    return "[$id] $name, $login : $cryptedPassword";
+  }
 }
