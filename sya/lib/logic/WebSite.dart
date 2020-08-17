@@ -10,6 +10,15 @@ class WebSite {
   String cryptedPassword;
 
 
+  /// Constructor of the class
+  WebSite(int id, String name, String login, String cryptedPassword) {
+    this.id = id;
+    this.name = name;
+    this.login = login;
+    this.cryptedPassword = cryptedPassword;
+  }
+
+
   /// Return the password decrypted.
   String decrypt(String key) {
     throw new Exception("Function not implemented !");
