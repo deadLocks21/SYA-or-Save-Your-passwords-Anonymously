@@ -21,7 +21,7 @@ class DaoMaster {
     await db.execute("CREATE TABLE IF NOT EXISTS Memory(themeColor TEXT)");
 
     await db.execute('''
-CREATE TABLE IF NOT EXISTS WebSite(name TEXT,
+CREATE TABLE IF NOT EXISTS Website(name TEXT,
                                    login TEXT,
                                    cryptedPassword TEXT,
                                   )''');
