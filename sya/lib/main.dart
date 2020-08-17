@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'database/MemoryDao.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -20,6 +24,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RaisedButton(
+              child: Text("Click on me !"),
+              onPressed: () async {print(await MemoryDao.getTheme());},
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
