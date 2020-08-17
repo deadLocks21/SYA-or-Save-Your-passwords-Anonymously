@@ -22,4 +22,8 @@ class WebsitesDao {
   static Future addAWebsite(Website website) async {
     await DaoMaster.insert("Website", {"name" : website.name, "login" : website.login, "cryptedPassword" : website.cryptedPassword});
   }
+
+  static Future modifyAWebsite(Website website) async {
+    await DaoMaster.update("Website", {"name" : website.name, "login" : website.login, "cryptedPassword" : website.cryptedPassword}, where: "rowid = ?", whereArgs: [website.id]);
+  }
 }
