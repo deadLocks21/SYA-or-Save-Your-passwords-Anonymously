@@ -30,7 +30,11 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RaisedButton(
-              child: Text("Click on me !"),
+              child: Text("Change theme"),
+              onPressed: () async {await MemoryDao.changeTheme("light");},
+            ),
+            RaisedButton(
+              child: Text("Print theme"),
               onPressed: () async {print(await MemoryDao.getTheme());},
             )
           ],
