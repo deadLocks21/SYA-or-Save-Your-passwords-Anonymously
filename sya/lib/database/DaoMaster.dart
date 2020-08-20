@@ -32,6 +32,15 @@ CREATE TABLE IF NOT EXISTS Website(name TEXT,
   /// Close the database.
   static Future close() async => db.close();
 
+  /// Method use for execute a sql query to the SQLite database.
+  static Future execute(String sql, List<dynamic> arguments) async {
+    await open();
+
+    await db.execute(sql, arguments);
+
+    await close();
+  }
+
 
   // CRUD functions.
   /// Method for insert data in the database.
