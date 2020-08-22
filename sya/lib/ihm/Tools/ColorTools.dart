@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-/// Constantes relative à la couleur
+/// Color Constants
 class ColorTools {
-  /// Retourne la couleur de fond des widgets.
+  /// Main background color of the widgets.
   static Color getMainColor() => new Color.fromARGB(0xFF, 0xBF, 0x06, 0x03);
 
-  /// Retourne la couleur de fond des boutons retour.
+  /// Secondary background color of the widgets.
   static Color getGoBackColor() => new Color.fromARGB(0xFF, 0x50, 0x50, 0x50);
 
-  /// Retourne la couleur des titres par défaut.
+  /// Default title color.
   static Color getTitleColor() => Colors.white;
 
-  /// Retourne la couleur des textes par défaut.
+  /// Default title color.
   static Color getTextColor() => Colors.black87;
 }

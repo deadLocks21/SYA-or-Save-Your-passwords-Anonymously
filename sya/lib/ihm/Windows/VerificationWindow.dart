@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sya/ihm/Tools/ColorTools.dart';
-import 'package:sya/ihm/Tools/FontWeightFactory.dart';
 import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/RedundantWidget.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
@@ -35,7 +34,7 @@ class _VerificationWindowState extends State<VerificationWindow> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: ResponsiveTools.textSize(20),
-                            fontWeight: FontWeightFactory.create(FontWeightType.MEDIUM),
+                            fontWeight: FontWeightType.MEDIUM,
                           ),
                         )
                       ),
