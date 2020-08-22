@@ -23,6 +23,7 @@ class _WelcomeWindowState extends State<WelcomeWindow> {
               children: [
                 RedundantWidget.welcommeIntoSYA(),
                 Container(
+                  height: ResponsiveTools.height(200),
                   margin: EdgeInsets.only(bottom: ResponsiveTools.height(149)),
                   child: Column(
                     children: [
