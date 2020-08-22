@@ -5,6 +5,7 @@ import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/RedundantWidget.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Widgets/RRaisedButton.dart';
+import 'package:sya/ihm/Windows/MainWindow.dart';
 
 
 class InformationWindow extends StatefulWidget {
@@ -114,7 +115,9 @@ class _InformationWindowState extends State<InformationWindow> {
                     child: RRaisedButton(
                       "SUPPRIMER",
                       color: ColorTools.getGoBackColor(),
-                      onPressed: () {},
+                      onPressed: () {
+                        _showDeleteDialog();
+                      },
                     ),
                     margin: EdgeInsets.only(right: ResponsiveTools.width(68)),
                   ),
@@ -130,6 +133,91 @@ class _InformationWindowState extends State<InformationWindow> {
           ],
         ),
       )
+    );
+  }
+
+  Future<void> _showDeleteDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Supprimer ce site ?'),
+          titleTextStyle: TextStyle(fontSize: ResponsiveTools.textSize(20), fontWeight: FontWeightType.MEDIUM, fontFamily: 'Roboto'),
+          titlePadding: EdgeInsets.only(left: ResponsiveTools.width(24), top: ResponsiveTools.height(16), bottom: ResponsiveTools.height(12)),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  'Si tu supprimes ce site, il sera',
+                  style: TextStyle(
+                      fontSize: ResponsiveTools.textSize(16)
+                  )
+                ),
+                Text(
+                  'impossible de le récupérer ...',
+                  style: TextStyle(
+                      fontSize: ResponsiveTools.textSize(16)
+                  )
+                ),
+              ],
+            ),
+          ),
+          contentTextStyle: TextStyle(fontSize: ResponsiveTools.textSize(16), fontWeight: FontWeightType.REGULAR, fontFamily: 'Roboto'),
+          contentPadding: EdgeInsets.only(left: ResponsiveTools.width(24), right: ResponsiveTools.width(24), bottom: ResponsiveTools.height(8)),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'ANNULER',
+                style: TextStyle(
+                  fontSize: ResponsiveTools.textSize(14),
+                  color: Color.fromARGB(0xFF, 0x80, 0xCB, 0xC4)
+                )
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text(
+                'SUPPRIMER',
+                style: TextStyle(
+                    fontSize: ResponsiveTools.textSize(14),
+                    color: Color.fromARGB(0xFF, 0x80, 0xCB, 0xC4)
+                )
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation,) => MainWindow(),
+                      transitionsBuilder: (
+                          context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child,
+                          ) =>
+                          ScaleTransition(
+                            scale: Tween<double>(
+                              begin: 0.0,
+                              end: 1.0,
+                            ).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.fastOutSlowIn,
+                              ),
+                            ),
+                            child: child,
+                          ),
+                    )
+                );
+              },
+            )
+          ],
+          buttonPadding: EdgeInsets.only(right: ResponsiveTools.width(16)),
+          actionsPadding: EdgeInsets.only(bottom: ResponsiveTools.height(8)),
+        );
+      },
     );
   }
 }
