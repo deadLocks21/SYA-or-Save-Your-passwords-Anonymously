@@ -10,18 +10,16 @@ import 'database/MemoryDao.dart';
 import 'ihm/Tools/ResponsiveTools.dart';
 
 
-Future<void> main() async {
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]);
-
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
+
     return MaterialApp(
       // home: MyHomePage(),
       home: WelcomeWindow(),
