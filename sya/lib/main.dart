@@ -8,6 +8,7 @@ import 'package:sya/logic/Website.dart';
 
 import 'database/MemoryDao.dart';
 import 'ihm/Tools/ResponsiveTools.dart';
+import 'ihm/Windows/VerificationWindow.dart';
 
 
 void main() => runApp(MyApp());
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       // home: MyHomePage(),
-      home: WelcomeWindow(),
+      home: VerificationWindow(),
       theme: ThemeData.dark(),
     );
   }
