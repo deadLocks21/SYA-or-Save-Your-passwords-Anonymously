@@ -1,23 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sya/database/DaoMaster.dart';
 import 'package:sya/database/WebsitesDao.dart';
+import 'package:sya/ihm/WelcomeWindow/WelcomeWindow.dart';
 import 'package:sya/logic/Website.dart';
 
 import 'database/MemoryDao.dart';
+import 'ihm/Tools/ResponsiveTools.dart';
 
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyHomePage(),
+      // home: MyHomePage(),
+      home: WelcomeWindow(),
+      theme: ThemeData.dark(),
     );
   }
 }
 
+/*
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
   @override
@@ -60,3 +73,4 @@ await DaoMaster.close();
     );
   }
 }
+*/
