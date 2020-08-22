@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sya/database/DaoMaster.dart';
 import 'package:sya/database/WebsitesDao.dart';
+import 'package:sya/ihm/Windows/MainWindow.dart';
 import 'package:sya/ihm/Windows/WelcomeWindow.dart';
 import 'package:sya/logic/Website.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       // home: MyHomePage(),
-      home: VerificationWindow(),
+      home: MainWindow(),
       theme: ThemeData.dark(),
     );
   }
