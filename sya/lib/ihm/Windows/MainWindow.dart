@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sya/ihm/Tools/ColorTools.dart';
 import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
+import 'package:sya/ihm/Windows/InformationWindow.dart';
+import 'package:sya/ihm/Windows/WelcomeWindow.dart';
 
 
 class MainWindow extends StatefulWidget {
@@ -34,13 +36,39 @@ class _MainWindowState extends State<MainWindow> {
             ),
           ),
           leading: Container(
-            margin: EdgeInsets.only(left: ResponsiveTools.width(8)),
+            width: ResponsiveTools.height(36),
             child: IconButton(
               icon: Icon(
                 Icons.power_settings_new,
                 color: ColorTools.getTitleColor(),
                 size: ResponsiveTools.height(24),
               ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation,) => WelcomeWindow(),
+                      transitionsBuilder: (
+                          context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child,
+                          ) =>
+                          ScaleTransition(
+                            scale: Tween<double>(
+                              begin: 0.0,
+                              end: 1.0,
+                            ).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.fastOutSlowIn,
+                              ),
+                            ),
+                            child: child,
+                          ),
+                    )
+                );
+              },
             ),
           ),
           actions: <Widget>[
@@ -143,7 +171,22 @@ class _MainWindowState extends State<MainWindow> {
           ResponsiveTools.height(0)),
     ),
     onPressed: () {
-      print(text);
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => InformationWindow(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              var begin = Offset(1.0, 0.0);
+              var end = Offset(0, 0);
+              var tween = Tween(begin: begin, end: end);
+              var offsetAnimation = animation.drive(tween);
+
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            }
+        )
+      );
     },
   );
 }

@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       // home: MyHomePage(),
-      home: InformationWindow(),
+      home: WelcomeWindow(),
       theme: ThemeData.dark(),
     );
   }

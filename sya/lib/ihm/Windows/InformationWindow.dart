@@ -34,7 +34,6 @@ class _InformationWindowState extends State<InformationWindow> {
           ),
         ),
         leading:  Container(
-          margin: EdgeInsets.only(left: ResponsiveTools.width(8)),
           child: IconButton(
             icon: Icon(
               Icons.arrow_back,
