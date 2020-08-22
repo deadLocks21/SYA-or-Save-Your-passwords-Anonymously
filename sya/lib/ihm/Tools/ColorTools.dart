@@ -5,6 +5,9 @@ class ColorTools {
   /// Retourne la couleur de fond des widgets.
   static Color getMainColor() => new Color.fromARGB(0xFF, 0xBF, 0x06, 0x03);
 
+  /// Retourne la couleur de fond des boutons retour.
+  static Color getGoBackColor() => new Color.fromARGB(0xFF, 0x50, 0x50, 0x50);
+
   /// Retourne la couleur des titres par défaut.
   static Color getTitleColor() => Colors.white;
 
