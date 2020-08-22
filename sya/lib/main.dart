@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sya/database/DaoMaster.dart';
 import 'package:sya/database/WebsitesDao.dart';
-import 'package:sya/ihm/WelcomeWindow/WelcomeWindow.dart';
+import 'package:sya/ihm/Windows/WelcomeWindow.dart';
 import 'package:sya/logic/Website.dart';
 
 import 'database/MemoryDao.dart';
