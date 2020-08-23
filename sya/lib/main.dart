@@ -5,6 +5,7 @@ import 'package:sya/database/DaoMaster.dart';
 import 'package:sya/database/WebsitesDao.dart';
 import 'package:sya/ihm/Windows/InformationWindow.dart';
 import 'package:sya/ihm/Windows/MainWindow.dart';
+import 'package:sya/ihm/Windows/WebsiteNameWindow.dart';
 import 'package:sya/ihm/Windows/WelcomeWindow.dart';
 import 'package:sya/logic/Website.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // home: MyHomePage(),
       home: WelcomeWindow(),
+      // home: WebsitNameWindow(website: new Website(id: null),),
       theme: ThemeData.dark(),
     );
   }
