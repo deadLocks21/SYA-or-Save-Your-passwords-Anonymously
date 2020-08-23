@@ -6,19 +6,21 @@ import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Widgets/RRaisedButton.dart';
 import 'package:sya/ihm/Windows/InitPasswordWindow.dart';
 import 'package:sya/logic/User.dart';
+import 'package:sya/logic/Website.dart';
 
-import 'InitKeyWindow.dart';
+import 'InitPasswordConfirmWindow.dart';
 
-class InitPasswordConfirmWindow extends StatefulWidget {
+class InitKeyWindow extends StatefulWidget {
   bool right;
+  String theKey;
 
-  InitPasswordConfirmWindow({Key key, this.right}) : super(key: key);
+  InitKeyWindow({Key key, this.right, this.theKey}) : super(key: key);
 
   @override
-  _InitPasswordConfirmWindowState createState() => _InitPasswordConfirmWindowState(right);
+  _InitKeyWindowState createState() => _InitKeyWindowState(right, theKey);
 }
 
-class _InitPasswordConfirmWindowState extends State<InitPasswordConfirmWindow>
+class _InitKeyWindowState extends State<InitKeyWindow>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   TextEditingController _tFController = TextEditingController();
@@ -30,8 +32,9 @@ class _InitPasswordConfirmWindowState extends State<InitPasswordConfirmWindow>
   bool enter = true;
   bool go = false;
   bool right;
+  String theKey;
 
-  _InitPasswordConfirmWindowState(this.right);
+  _InitKeyWindowState(this.right, this.theKey);
 
   @override
   void initState() {
@@ -82,7 +85,7 @@ class _InitPasswordConfirmWindowState extends State<InitPasswordConfirmWindow>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     ResponsiveTools.initScreenUtils(context);
 
     return Scaffold(
@@ -136,14 +139,14 @@ class _InitPasswordConfirmWindowState extends State<InitPasswordConfirmWindow>
                             fontSize: ResponsiveTools.textSize(16)
                         ),
                         decoration: InputDecoration(
-                          labelText: "Confirme ton mot de passe.",
-                          errorStyle: TextStyle(
-                            fontSize: ResponsiveTools.textSize(12)
-                          )
+                            labelText: "Entre ta clé de vérification.",
+                            errorStyle: TextStyle(
+                                fontSize: ResponsiveTools.textSize(12)
+                            )
                         ),
                         validator: (value) {
-                          if (value != User.password) {
-                            return "Les mots de passe ne correspondent pas.";
+                          if (value.length < 8) {
+                            return "La clé doit contenir minimum 8 caractères.";
                           }
                           return null;
                         },
@@ -170,7 +173,7 @@ class _InitPasswordConfirmWindowState extends State<InitPasswordConfirmWindow>
                           Navigator.pushReplacement(
                             context,
                             PageRouteBuilder(
-                              pageBuilder: (context, animation1, animation2) => InitPasswordWindow(right: false),
+                              pageBuilder: (context, animation1, animation2) => InitPasswordConfirmWindow(right: false),
                             ),
                           );
                         },
@@ -186,13 +189,15 @@ class _InitPasswordConfirmWindowState extends State<InitPasswordConfirmWindow>
                                 right = false;
                               });
 
-                              String theKey = await WebsitesDao.getTheKey();
+                              Website website = new Website(id: 0);
+                              website.crypt(_tFController.text, User.password);
+                              await website.add();
                               await _controller.forward(from: 0);
 
                               Navigator.pushReplacement(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder: (context, animation1, animation2) => InitKeyWindow(right: true, theKey: theKey),
+                                  pageBuilder: (context, animation1, animation2) => InitKeyWindow(right: false,),
                                 ),
                               );
                             }
