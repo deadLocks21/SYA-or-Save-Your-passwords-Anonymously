@@ -25,7 +25,7 @@ class _MainWindowState extends State<MainWindow> {
         appBar: AppBar(
           toolbarHeight: ResponsiveTools.height(48),
           title: Container(
-            margin: EdgeInsets.only(left: ResponsiveTools.width(32)),
+            margin: EdgeInsets.only(left: ResponsiveTools.width(16)),
             child: Text(
               "Bienvenue dans SYA",
               style: TextStyle(
