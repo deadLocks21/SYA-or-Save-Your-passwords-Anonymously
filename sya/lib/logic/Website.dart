@@ -24,14 +24,19 @@ class Website {
     return Security.decrypt(cryptedPassword, key);
   }
 
+  /// Crypt the password.
+  void crypt(String password, String key) {
+    cryptedPassword = Security.crypt(password, key);
+  }
+
   /// Add the website.
   add() {
-    WebsitesDao.addAWebsite(new Website(id: id, name: name, login: login, cryptedPassword: Security.crypt(cryptedPassword, User.password)));
+    WebsitesDao.addAWebsite(new Website(id: id, name: name, login: login, cryptedPassword: cryptedPassword));
   }
 
   /// Save the website in the database.
   save() {
-    WebsitesDao.modifyAWebsite(new Website(id: id, name: name, login: login, cryptedPassword: Security.crypt(cryptedPassword, User.password)));
+    WebsitesDao.modifyAWebsite(new Website(id: id, name: name, login: login, cryptedPassword: cryptedPassword));
   }
 
   @override
