@@ -7,34 +7,32 @@ import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Widgets/RRaisedButton.dart';
 import 'package:sya/ihm/Windows/InformationWindow.dart';
 import 'package:sya/ihm/Windows/WebsiteNameWindow.dart';
-import 'package:sya/ihm/Windows/WebsitePasswordWindow.dart';
 import 'package:sya/ihm/Windows/WelcomeWindow.dart';
 import 'package:sya/logic/Website.dart';
 
+import 'MainWindow.dart';
+import 'WebsiteLoginWindow.dart';
 
-class WebsiteLoginWindow extends StatefulWidget {
+
+class WebsitePasswordWindow extends StatefulWidget {
   Website website;
-  bool right;
 
-  WebsiteLoginWindow({Key key, this.website, this.right}) : super(key: key);
+  WebsitePasswordWindow({Key key, this.website}) : super(key: key);
 
   @override
-  _WebsiteLoginWindowState createState() => _WebsiteLoginWindowState(website, right);
+  _WebsitePasswordWindowState createState() => _WebsitePasswordWindowState(website);
 }
 
-class _WebsiteLoginWindowState extends State<WebsiteLoginWindow>
+class _WebsitePasswordWindowState extends State<WebsitePasswordWindow>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  Animation<Offset> _offsetAnimationInL;
-  Animation<Offset> _offsetAnimationInR;
-  Animation<Offset> _offsetAnimationOutL;
-  Animation<Offset> _offsetAnimationOutR;
+  Animation<Offset> _offsetAnimationIn;
+  Animation<Offset> _offsetAnimationOut;
   bool enter = true;
-  bool right;
   TextEditingController _tFController = TextEditingController();
   Website website;
 
-  _WebsiteLoginWindowState(this.website, this.right);
+  _WebsitePasswordWindowState(this.website);
 
   @override
   void initState() {
@@ -45,7 +43,7 @@ class _WebsiteLoginWindowState extends State<WebsiteLoginWindow>
       vsync: this,
     )..forward(from: 0);
 
-    _offsetAnimationInR = Tween<Offset>(
+    _offsetAnimationIn = Tween<Offset>(
       begin: Offset(2, 0),
       end: Offset(0, 0),
     ).animate(CurvedAnimation(
@@ -53,25 +51,9 @@ class _WebsiteLoginWindowState extends State<WebsiteLoginWindow>
       curve: Curves.easeInOutBack,
     ));
 
-    _offsetAnimationInL = Tween<Offset>(
-      begin: Offset(-2, 0),
-      end: Offset(0, 0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOutBack,
-    ));
-
-    _offsetAnimationOutR = Tween<Offset>(
+    _offsetAnimationOut = Tween<Offset>(
       begin: Offset(0, 0),
       end: Offset(2, 0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOutBack,
-    ));
-
-    _offsetAnimationOutL = Tween<Offset>(
-      begin: Offset(0, 0),
-      end: Offset(-2, 0),
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOutBack,
@@ -88,7 +70,7 @@ class _WebsiteLoginWindowState extends State<WebsiteLoginWindow>
   @override
   Widget build(BuildContext context) {
     ResponsiveTools.initScreenUtils(context);
-    _tFController.text = website.login;
+    _tFController.text = website.cryptedPassword;  // TODO Décrypt
 
     return Scaffold(
       appBar: AppBar(
@@ -122,7 +104,7 @@ class _WebsiteLoginWindowState extends State<WebsiteLoginWindow>
             child: Column(
               children: [
                 SlideTransition(
-                  position: enter ? (right ? _offsetAnimationInR : _offsetAnimationInL)  : (right ? _offsetAnimationOutR : _offsetAnimationOutL),
+                  position: enter ? _offsetAnimationIn : _offsetAnimationOut,
                   child: Container(
                     height: ResponsiveTools.height(200),
                     margin: EdgeInsets.only(
@@ -140,7 +122,7 @@ class _WebsiteLoginWindowState extends State<WebsiteLoginWindow>
                                 fontSize: ResponsiveTools.textSize(16)
                             ),
                             decoration: InputDecoration(
-                                labelText: "Entre ton login du site web."
+                                labelText: "Entre ton mot de passe."
                             ),
                           ),
                         ),
@@ -151,8 +133,6 @@ class _WebsiteLoginWindowState extends State<WebsiteLoginWindow>
                               "RETOUR",
                               color: ColorTools.getGoBackColor(),
                               onPressed: () async {
-                                this.right = true;
-
                                 setState(() {
                                   enter = !enter;
                                 });
@@ -162,31 +142,41 @@ class _WebsiteLoginWindowState extends State<WebsiteLoginWindow>
                                 Navigator.pushReplacement(
                                   context,
                                   PageRouteBuilder(
-                                    pageBuilder: (context, animation1, animation2) => WebsiteNameWindow(website: website,),
+                                    pageBuilder: (context, animation1, animation2) => WebsiteLoginWindow(website: website, right: false,),
                                   ),
                                 );
                               },
                             ),
                             Container(width: ResponsiveTools.width(54),),
                             RRaisedButton(
-                              "CONTINUER",
+                              website.id == null ? "SAUVEGARDER" : "ENREGISTRER",
                               color: ColorTools.getMainColor(),
-                              onPressed: () async {
-                                this.right = false;
-
-                                setState(() {
-                                  enter = !enter;
-                                });
-
-                                await _controller.forward(from: 0);
-
-                                website.login = _tFController.text;
+                              onPressed: () {
+                                // website.id == null ? website.save() : website.add(); TODO Remmetre quand vrai info.
 
                                 Navigator.pushReplacement(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, animation1, animation2) => WebsitePasswordWindow(website: website,),
-                                  ),
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation,) => MainWindow(),
+                                      transitionsBuilder: (
+                                          context,
+                                          Animation<double> animation,
+                                          Animation<double> secondaryAnimation,
+                                          Widget child,
+                                          ) =>
+                                          ScaleTransition(
+                                            scale: Tween<double>(
+                                              begin: 0.0,
+                                              end: 1.0,
+                                            ).animate(
+                                              CurvedAnimation(
+                                                parent: animation,
+                                                curve: Curves.fastOutSlowIn,
+                                              ),
+                                            ),
+                                            child: child,
+                                          ),
+                                    )
                                 );
                               },
                             ),

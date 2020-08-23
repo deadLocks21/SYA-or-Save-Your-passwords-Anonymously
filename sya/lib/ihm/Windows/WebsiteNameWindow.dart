@@ -1,4 +1,3 @@
-// WebsitNameWindow
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sya/ihm/Tools/ColorTools.dart';
@@ -139,7 +138,7 @@ class _WebsiteNameWindowState extends State<WebsiteNameWindow>
                             Navigator.pushReplacement(
                               context,
                               PageRouteBuilder(
-                                pageBuilder: (context, animation1, animation2) => WebsiteLoginWindow(website: website,),
+                                pageBuilder: (context, animation1, animation2) => WebsiteLoginWindow(website: website, right: true,),
                               ),
                             );
                           },
