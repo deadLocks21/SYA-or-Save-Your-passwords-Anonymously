@@ -11,6 +11,7 @@ import 'package:sya/logic/Website.dart';
 
 import 'database/MemoryDao.dart';
 import 'ihm/Tools/ResponsiveTools.dart';
+import 'ihm/Windows/IntroductionIntentWindow.dart';
 import 'ihm/Windows/VerificationWindow.dart';
 
 
@@ -26,8 +27,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       // home: MyHomePage(),
-      home: WelcomeWindow(),
+      // home: WelcomeWindow(),
       // home: WebsitNameWindow(website: new Website(id: null),),
+      home: IntroductionIntentWindow(),
       theme: ThemeData.dark(),
     );
   }
