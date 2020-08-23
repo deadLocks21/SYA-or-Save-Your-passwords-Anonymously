@@ -5,17 +5,19 @@ import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Windows/IntroductionExplicationWindow.dart';
 
-class IntroductionIntentWindow extends StatefulWidget {
-  IntroductionIntentWindow({Key key}) : super(key: key);
+class IntroductionExplicationWindow extends StatefulWidget {
+  IntroductionExplicationWindow({Key key}) : super(key: key);
 
   @override
-  _IntroductionIntentWindowState createState() => _IntroductionIntentWindowState();
+  _IntroductionExplicationWindowState createState() => _IntroductionExplicationWindowState();
 }
 
-class _IntroductionIntentWindowState extends State<IntroductionIntentWindow>
+class _IntroductionExplicationWindowState extends State<IntroductionExplicationWindow>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  Animation<Offset> _offsetAnimation;
+  Animation<Offset> _offsetAnimationIn;
+  Animation<Offset> _offsetAnimationOut;
+  bool enter = true;
 
   @override
   void initState() {
@@ -24,9 +26,17 @@ class _IntroductionIntentWindowState extends State<IntroductionIntentWindow>
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
-    );
+    )..forward(from: 0);
 
-    _offsetAnimation = Tween<Offset>(
+    _offsetAnimationIn = Tween<Offset>(
+      begin: Offset(2, 0),
+      end: Offset(0, 0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOutBack,
+    ));
+
+    _offsetAnimationOut = Tween<Offset>(
       begin: Offset(0, 0),
       end: Offset(-2, 0),
     ).animate(CurvedAnimation(
@@ -84,10 +94,10 @@ class _IntroductionIntentWindowState extends State<IntroductionIntentWindow>
               ),
             ),
             SlideTransition(
-              position: _offsetAnimation,
+              position: enter ? _offsetAnimationIn : _offsetAnimationOut,
               child: Container(
                 child: Text(
-                  "Je te propose ici de sécuriser l’intégralité de tes mots de passe dans cette application. Tu me demanderas sûrement pourquoi cette application et pas une autre et tu as raison de te poser cette question. J’ai développé cette application dans le but de sécuriser les mots de passes de la femme que j’aime. Donc mon but est bien de construire quelque chose d’inviolable. La base de données contient seulement des valeurs cryptés (seulement les mots de passes). Elle reste en local sur le téléphone. J’ai fait mon maximum pour limiter les risques.",
+                  "Cette application fonctionne d’une manière assez inhabituelle. Tu n’auras besoin que d’un mot de passe de plus de 30 caractères. Il peut s’agir d’une phrase avec de la ponctuation et des chiffres, ou alors d’une suite que toi seul connaît à toi de voir. Mais une fois ce mot de passe rentré, une clé de vérification que tu auras renseigné sera décrypte avec le mot de passe et tu devras alors valider si c’est bien la clé que tu as renseigné pour vérifier si le mot de passe est bon. Le mot de passe n’est pas stocké dans à toi de bien le conserver. Mais trêve de bavardages, je te laisse commencer à renseigné le mot de passe et la clé ^^",
                   style: TextStyle(
                     fontWeight: FontWeightType.REGULAR,
                     fontSize: ResponsiveTools.textSize(18),
@@ -100,29 +110,33 @@ class _IntroductionIntentWindowState extends State<IntroductionIntentWindow>
             ),
           ],
         ),
-    ),
+      ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
         height: ResponsiveTools.height(36),
         child: FloatingActionButton.extended(
           onPressed: () async {
+            setState(() {
+              enter = !enter;
+            });
+
             await _controller.forward(from: 0);
 
-            Navigator.pushReplacement(
+            /*Navigator.pushReplacement(
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation1, animation2) => IntroductionExplicationWindow(),
               ),
-            );
+            );*/
           },
           label: Row(
             children: [
               Text(
                 "CONTINUER",
                 style: TextStyle(
-                  fontSize: ResponsiveTools.textSize(20),
-                  color: ColorTools.getTitleColor()
+                    fontSize: ResponsiveTools.textSize(20),
+                    color: ColorTools.getTitleColor()
                 ),
               ),
               Icon(
