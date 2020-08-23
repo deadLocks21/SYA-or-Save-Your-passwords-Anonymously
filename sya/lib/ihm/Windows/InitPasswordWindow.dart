@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sya/ihm/Tools/ColorTools.dart';
-import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Widgets/RRaisedButton.dart';
 import 'package:sya/logic/User.dart';
+import 'InitPasswordConfirmWindow.dart';
+
 
 class InitPasswordWindow extends StatefulWidget {
   InitPasswordWindow({Key key}) : super(key: key);
@@ -111,11 +112,13 @@ class _InitPasswordWindowState extends State<InitPasswordWindow>
                         ),
                         decoration: InputDecoration(
                             labelText: "Entre ton mot de passe.",
-                            errorText: validatePassword(_tFController.text)
+                            errorStyle: TextStyle(
+                                fontSize: ResponsiveTools.textSize(12)
+                            )
                         ),
                         validator: (value) {
                           if (!value.contains(new RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{32,}$"))) {
-                            return "Doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spéciale.";
+                            return "Doit contenir au moins une majuscule, une minuscule, \nun chiffre et un caractère spéciale.";
                           }
                           return null;
                         },
@@ -140,7 +143,7 @@ class _InitPasswordWindowState extends State<InitPasswordWindow>
                         Navigator.pushReplacement(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (context, animation1, animation2) => InitPasswordWindow(),
+                            pageBuilder: (context, animation1, animation2) => InitPasswordConfirmWindow(),
                           ),
                         );
                       }
@@ -154,9 +157,5 @@ class _InitPasswordWindowState extends State<InitPasswordWindow>
         ),
       ),
     );
-  }
-
-  String validatePassword(String value) {
-
   }
 }
