@@ -10,7 +10,7 @@ class WebsitesDao {
     List<Website> ret = new List<Website>();
 
     for (int i = 0; i < retQuery.length; i++)
-      ret.add(new Website(retQuery[i]['rowid'], retQuery[i]['name'], retQuery[i]['login'], retQuery[i]['cryptedPassword']));
+      ret.add(new Website(id: retQuery[i]['rowid'], name: retQuery[i]['name'], login: retQuery[i]['login'], cryptedPassword: retQuery[i]['cryptedPassword']));
 
     return ret;
   }

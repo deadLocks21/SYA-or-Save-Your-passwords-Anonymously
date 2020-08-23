@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sya/database/WebsitesDao.dart';
 import 'package:sya/logic/Security.dart';
 import 'package:sya/logic/User.dart';
@@ -15,7 +16,7 @@ class Website {
 
 
   /// Constructor of the class
-  Website(this.id, this.name, this.login, this.cryptedPassword);
+  Website({@required this.id, this.name, this.login, this.cryptedPassword});
 
 
   /// Return the password decrypted.
@@ -25,12 +26,12 @@ class Website {
 
   /// Add the website.
   add() {
-    WebsitesDao.addAWebsite(new Website(id, name, login, Security.crypt(cryptedPassword, User.password)));
+    WebsitesDao.addAWebsite(new Website(id: id, name: name, login: login, cryptedPassword: Security.crypt(cryptedPassword, User.password)));
   }
 
   /// Save the website in the database.
   save() {
-    WebsitesDao.modifyAWebsite(new Website(id, name, login, Security.crypt(cryptedPassword, User.password)));
+    WebsitesDao.modifyAWebsite(new Website(id: id, name: name, login: login, cryptedPassword: Security.crypt(cryptedPassword, User.password)));
   }
 
   @override
