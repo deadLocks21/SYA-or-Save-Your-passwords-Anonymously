@@ -125,7 +125,7 @@ class _IntroductionExplicationWindowState extends State<IntroductionExplicationW
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) => InitPasswordWindow(),
+                          pageBuilder: (context, animation1, animation2) => InitPasswordWindow(right: true,),
                         ),
                       );
                     }

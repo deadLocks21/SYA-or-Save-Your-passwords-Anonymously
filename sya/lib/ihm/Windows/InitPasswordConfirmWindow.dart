@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:sya/ihm/Tools/ColorTools.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Widgets/RRaisedButton.dart';
+import 'package:sya/ihm/Windows/InitPasswordWindow.dart';
 import 'package:sya/logic/User.dart';
-import 'InitPasswordConfirmWindow.dart';
 
-
-class InitPasswordWindow extends StatefulWidget {
+class InitPasswordConfirmWindow extends StatefulWidget {
   bool right;
 
-  InitPasswordWindow({Key key, this.right}) : super(key: key);
+  InitPasswordConfirmWindow({Key key, this.right}) : super(key: key);
 
   @override
-  _InitPasswordWindowState createState() => _InitPasswordWindowState(right);
+  _InitPasswordConfirmWindowState createState() => _InitPasswordConfirmWindowState(right);
 }
 
-class _InitPasswordWindowState extends State<InitPasswordWindow>
+class _InitPasswordConfirmWindowState extends State<InitPasswordConfirmWindow>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   TextEditingController _tFController = TextEditingController();
@@ -29,7 +28,7 @@ class _InitPasswordWindowState extends State<InitPasswordWindow>
   bool go = false;
   bool right;
 
-  _InitPasswordWindowState(this.right);
+  _InitPasswordConfirmWindowState(this.right);
 
   @override
   void initState() {
@@ -82,7 +81,6 @@ class _InitPasswordWindowState extends State<InitPasswordWindow>
   @override
   Widget build(BuildContext context) {
     ResponsiveTools.initScreenUtils(context);
-    _tFController.text = User.password;
 
     return Scaffold(
       body: Center(
@@ -135,14 +133,14 @@ class _InitPasswordWindowState extends State<InitPasswordWindow>
                             fontSize: ResponsiveTools.textSize(16)
                         ),
                         decoration: InputDecoration(
-                            labelText: "Entre ton mot de passe.",
-                            errorStyle: TextStyle(
-                                fontSize: ResponsiveTools.textSize(12)
-                            )
+                          labelText: "Confirme ton mot de passe.",
+                          errorStyle: TextStyle(
+                            fontSize: ResponsiveTools.textSize(12)
+                          )
                         ),
                         validator: (value) {
-                          if (!value.contains(new RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{32,}$"))) {
-                            return "Doit contenir au moins une majuscule, une minuscule, \nun chiffre et un caractère spéciale.";
+                          if (value != User.password) {
+                            return "Les mots de passe ne correspondent pas.";
                           }
                           return null;
                         },
@@ -151,30 +149,54 @@ class _InitPasswordWindowState extends State<InitPasswordWindow>
                     margin: EdgeInsets.only(top: ResponsiveTools.height(24), bottom: ResponsiveTools.height(16)),
                     width: ResponsiveTools.width(320),
                   ),
-                  RRaisedButton(
-                    "CONTINUER",
-                    color: ColorTools.getMainColor(),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        User.password = _tFController.text;
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RRaisedButton(
+                        "RETOUR",
+                        color: ColorTools.getGoBackColor(),
+                        onPressed: () async {
+                          this.right = true;
 
-                        setState(() {
-                          enter = !enter;
-                          right = false;
-                        });
+                          setState(() {
+                            enter = !enter;
+                          });
 
+                          await _controller.forward(from: 0);
 
-                        await _controller.forward(from: 0);
+                          Navigator.pushReplacement(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) => InitPasswordWindow(right: false),
+                            ),
+                          );
+                        },
+                      ),
+                      Container(width: ResponsiveTools.width(54),),
+                      RRaisedButton(
+                          "CONTINUER",
+                          color: ColorTools.getMainColor(),
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              User.password = _tFController.text;
 
-                        Navigator.pushReplacement(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation1, animation2) => InitPasswordConfirmWindow(right: true,),
-                          ),
-                        );
-                      }
-                      /**/
-                    }
+                              setState(() {
+                                enter = !enter;
+                                right = false;
+                              });
+
+                              await _controller.forward(from: 0);
+
+                              Navigator.pushReplacement(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation1, animation2) => InitPasswordConfirmWindow(right: false,),
+                                ),
+                              );
+                            }
+                          }
+                      ),
+                    ],
                   )
                 ],
               ),
