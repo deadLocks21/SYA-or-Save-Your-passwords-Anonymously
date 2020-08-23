@@ -93,7 +93,7 @@ class _MainWindowState extends State<MainWindow> {
             onPressed: () {
               Navigator.of(context).push(
                   PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => WebsiteNameWindow(website: new Website(id: 1, name: "name", login: "login", cryptedPassword: "cryptedPassword"),),
+                      pageBuilder: (context, animation, secondaryAnimation) => WebsiteNameWindow(website: new Website(id: null),),
                       transitionsBuilder: (context, animation, secondaryAnimation, child) {
                         var begin = Offset(0.0, 1.0);
                         var end = Offset(0, 0);
@@ -192,7 +192,7 @@ class _MainWindowState extends State<MainWindow> {
     onPressed: () {
       Navigator.of(context).push(
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => InformationWindow(),
+          pageBuilder: (context, animation, secondaryAnimation) => InformationWindow(website: new Website(id: 0, name: "name", login: "login", cryptedPassword: "cryptedPassword"),),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               var begin = Offset(1.0, 0.0);
               var end = Offset(0, 0);

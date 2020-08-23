@@ -6,16 +6,26 @@ import 'package:sya/ihm/Tools/RedundantWidget.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Widgets/RRaisedButton.dart';
 import 'package:sya/ihm/Windows/MainWindow.dart';
+import 'package:sya/logic/Website.dart';
+import 'package:sya/logic/User.dart';
+
+import 'WebsiteNameWindow.dart';
 
 
 class InformationWindow extends StatefulWidget {
-  InformationWindow({Key key}) : super(key: key);
+  Website website;
+
+  InformationWindow({Key key, this.website}) : super(key: key);
 
   @override
-  _InformationWindowState createState() => _InformationWindowState();
+  _InformationWindowState createState() => _InformationWindowState(website);
 }
 
 class _InformationWindowState extends State<InformationWindow> {
+  Website website;
+
+  _InformationWindowState(this.website);
+
   @override
   Widget build(BuildContext context) {
     ResponsiveTools.initScreenUtils(context);
@@ -55,7 +65,7 @@ class _InformationWindowState extends State<InformationWindow> {
               margin: EdgeInsets.only(left: ResponsiveTools.width(16), bottom: ResponsiveTools.height(32), top: ResponsiveTools.height(60)),
               width: ResponsiveTools.width(328),
               child: Text(
-                "Site Web n°1",
+                website.name,
                 style: TextStyle(
                     fontSize: ResponsiveTools.textSize(24),
                     fontWeight: FontWeightType.MEDIUM
@@ -77,7 +87,7 @@ class _InformationWindowState extends State<InformationWindow> {
               margin: EdgeInsets.only(left: ResponsiveTools.width(32), bottom: ResponsiveTools.height(32)),
               width: ResponsiveTools.width(328),
               child: Text(
-                "mail@mail.com",
+                website.login,
                 style: TextStyle(
                     fontSize: ResponsiveTools.textSize(16),
                     fontWeight: FontWeightType.REGULAR
@@ -99,7 +109,7 @@ class _InformationWindowState extends State<InformationWindow> {
               margin: EdgeInsets.only(left: ResponsiveTools.width(32), bottom: ResponsiveTools.height(40)),
               width: ResponsiveTools.width(328),
               child: Text(
-                "etCoucou",
+                website.cryptedPassword, // website.decrypt(User.password), // TODO Décrypter le password.
                 style: TextStyle(
                     fontSize: ResponsiveTools.textSize(16),
                     fontWeight: FontWeightType.REGULAR
@@ -124,7 +134,24 @@ class _InformationWindowState extends State<InformationWindow> {
                   RRaisedButton(
                     "MODIFIER",
                     color: ColorTools.getMainColor(),
-                    onPressed: () {}
+                    onPressed: () {
+                      Navigator.of(context).push(
+                          PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => WebsiteNameWindow(website: website),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                var begin = Offset(0.0, 1.0);
+                                var end = Offset(0, 0);
+                                var tween = Tween(begin: begin, end: end);
+                                var offsetAnimation = animation.drive(tween);
+
+                                return SlideTransition(
+                                  position: offsetAnimation,
+                                  child: child,
+                                );
+                              }
+                          )
+                      );
+                    }
                   )
                 ],
               ),

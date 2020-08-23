@@ -7,21 +7,21 @@ import 'package:sya/ihm/Tools/RedundantWidget.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Widgets/RRaisedButton.dart';
 import 'package:sya/ihm/Windows/InformationWindow.dart';
-import 'package:sya/ihm/Windows/WebsiteLoginWindow.dart';
+import 'package:sya/ihm/Windows/WebsiteNameWindow.dart';
 import 'package:sya/ihm/Windows/WelcomeWindow.dart';
 import 'package:sya/logic/Website.dart';
 
 
-class WebsiteNameWindow extends StatefulWidget {
+class WebsiteLoginWindow extends StatefulWidget {
   Website website;
 
-  WebsiteNameWindow({Key key, this.website}) : super(key: key);
+  WebsiteLoginWindow({Key key, this.website}) : super(key: key);
 
   @override
-  _WebsiteNameWindowState createState() => _WebsiteNameWindowState(website);
+  _WebsiteLoginWindowState createState() => _WebsiteLoginWindowState(website);
 }
 
-class _WebsiteNameWindowState extends State<WebsiteNameWindow>
+class _WebsiteLoginWindowState extends State<WebsiteLoginWindow>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<Offset> _offsetAnimationIn;
@@ -30,7 +30,7 @@ class _WebsiteNameWindowState extends State<WebsiteNameWindow>
   TextEditingController _tFController = TextEditingController();
   Website website;
 
-  _WebsiteNameWindowState(this.website);
+  _WebsiteLoginWindowState(this.website);
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _WebsiteNameWindowState extends State<WebsiteNameWindow>
     )..forward(from: 0);
 
     _offsetAnimationIn = Tween<Offset>(
-      begin: Offset(-2, 0),
+      begin: Offset(2, 0),
       end: Offset(0, 0),
     ).animate(CurvedAnimation(
       parent: _controller,
@@ -51,7 +51,7 @@ class _WebsiteNameWindowState extends State<WebsiteNameWindow>
 
     _offsetAnimationOut = Tween<Offset>(
       begin: Offset(0, 0),
-      end: Offset(-2, 0),
+      end: Offset(2, 0),
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOutBack,
@@ -68,7 +68,7 @@ class _WebsiteNameWindowState extends State<WebsiteNameWindow>
   @override
   Widget build(BuildContext context) {
     ResponsiveTools.initScreenUtils(context);
-    _tFController.text = website.name;
+    _tFController.text = website.login;
 
     return Scaffold(
       appBar: AppBar(
@@ -120,30 +120,64 @@ class _WebsiteNameWindowState extends State<WebsiteNameWindow>
                                 fontSize: ResponsiveTools.textSize(16)
                             ),
                             decoration: InputDecoration(
-                                labelText: "Entre le nom du site."
+                                labelText: "Entre ton login du site web."
                             ),
                           ),
                         ),
-                        RRaisedButton(
-                          "CONTINUER",
-                          color: ColorTools.getMainColor(),
-                          onPressed: () async {
-                            setState(() {
-                              enter = !enter;
-                            });
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RRaisedButton(
+                              "RETOUR",
+                              color: ColorTools.getGoBackColor(),
+                              onPressed: () async {
+                                setState(() {
+                                  enter = !enter;
+                                });
 
-                            await _controller.forward(from: 0);
+                                await _controller.forward(from: 0);
 
-                            website.name = _tFController.text;
-
-                            Navigator.pushReplacement(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder: (context, animation1, animation2) => WebsiteLoginWindow(website: website,),
-                              ),
-                            );
-                          },
-                        ),
+                                Navigator.pushReplacement(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation1, animation2) => WebsiteNameWindow(website: website,),
+                                  ),
+                                );
+                              },
+                            ),
+                            Container(width: ResponsiveTools.width(54),),
+                            RRaisedButton(
+                              "CONTINUER",
+                              color: ColorTools.getMainColor(),
+                              onPressed: () {
+                                /*Navigator.pushReplacement(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation,) => MainWindow(),
+                                      transitionsBuilder: (
+                                          context,
+                                          Animation<double> animation,
+                                          Animation<double> secondaryAnimation,
+                                          Widget child,
+                                          ) =>
+                                          ScaleTransition(
+                                            scale: Tween<double>(
+                                              begin: 0.0,
+                                              end: 1.0,
+                                            ).animate(
+                                              CurvedAnimation(
+                                                parent: animation,
+                                                curve: Curves.fastOutSlowIn,
+                                              ),
+                                            ),
+                                            child: child,
+                                          ),
+                                    )
+                                );*/
+                              },
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
