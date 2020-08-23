@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:sya/ihm/Tools/ColorTools.dart';
 import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
+import 'package:sya/ihm/Widgets/RRaisedButton.dart';
 import 'package:sya/ihm/Windows/IntroductionExplicationWindow.dart';
+
+import 'InitPasswordWindow.dart';
 
 class IntroductionExplicationWindow extends StatefulWidget {
   IntroductionExplicationWindow({Key key}) : super(key: key);
@@ -95,58 +98,42 @@ class _IntroductionExplicationWindowState extends State<IntroductionExplicationW
             ),
             SlideTransition(
               position: enter ? _offsetAnimationIn : _offsetAnimationOut,
-              child: Container(
-                child: Text(
-                  "Cette application fonctionne d’une manière assez inhabituelle. Tu n’auras besoin que d’un mot de passe de plus de 30 caractères. Il peut s’agir d’une phrase avec de la ponctuation et des chiffres, ou alors d’une suite que toi seul connaît à toi de voir. Mais une fois ce mot de passe rentré, une clé de vérification que tu auras renseigné sera décrypte avec le mot de passe et tu devras alors valider si c’est bien la clé que tu as renseigné pour vérifier si le mot de passe est bon. Le mot de passe n’est pas stocké dans à toi de bien le conserver. Mais trêve de bavardages, je te laisse commencer à renseigné le mot de passe et la clé ^^",
-                  style: TextStyle(
-                    fontWeight: FontWeightType.REGULAR,
-                    fontSize: ResponsiveTools.textSize(18),
+              child: Column(
+                children: [
+                  Container(
+                    child: Text(
+                      "Cette application fonctionne d’une manière assez inhabituelle. Tu n’auras besoin que d’un mot de passe de plus de 30 caractères. Il peut s’agir d’une phrase avec de la ponctuation et des chiffres, ou alors d’une suite que toi seul connaît à toi de voir. Mais une fois ce mot de passe rentré, une clé de vérification que tu auras renseigné sera décrypte avec le mot de passe et tu devras alors valider si c’est bien la clé que tu as renseigné pour vérifier si le mot de passe est bon. Le mot de passe n’est pas stocké dans à toi de bien le conserver. Mais trêve de bavardages, je te laisse commencer à renseigné le mot de passe et la clé ^^",
+                      style: TextStyle(
+                        fontWeight: FontWeightType.REGULAR,
+                        fontSize: ResponsiveTools.textSize(18),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    margin: EdgeInsets.only(top: ResponsiveTools.height(24), bottom: ResponsiveTools.height(16)),
+                    width: ResponsiveTools.width(320),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                margin: EdgeInsets.only(top: ResponsiveTools.height(24)),
-                width: ResponsiveTools.width(320),
+                  RRaisedButton(
+                    "CONTINUER",
+                    color: ColorTools.getMainColor(),
+                    onPressed: () async {
+                      setState(() {
+                        enter = !enter;
+                      });
+
+                      await _controller.forward(from: 0);
+
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) => InitPasswordWindow(),
+                        ),
+                      );
+                    }
+                  ),
+                ],
               ),
             ),
           ],
-        ),
-      ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        height: ResponsiveTools.height(36),
-        child: FloatingActionButton.extended(
-          onPressed: () async {
-            setState(() {
-              enter = !enter;
-            });
-
-            await _controller.forward(from: 0);
-
-            /*Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) => IntroductionExplicationWindow(),
-              ),
-            );*/
-          },
-          label: Row(
-            children: [
-              Text(
-                "CONTINUER",
-                style: TextStyle(
-                    fontSize: ResponsiveTools.textSize(20),
-                    color: ColorTools.getTitleColor()
-                ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: ResponsiveTools.height(24),
-                color: ColorTools.getTitleColor(),
-              ),
-            ],
-          ),
-          backgroundColor: ColorTools.getMainColor(),
         ),
       ),
     );
