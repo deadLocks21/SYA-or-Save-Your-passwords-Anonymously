@@ -4,7 +4,9 @@ import 'package:sya/ihm/Tools/ColorTools.dart';
 import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Windows/InformationWindow.dart';
+import 'package:sya/ihm/Windows/WebsiteNameWindow.dart';
 import 'package:sya/ihm/Windows/WelcomeWindow.dart';
+import 'package:sya/logic/Website.dart';
 
 
 class MainWindow extends StatefulWidget {
@@ -88,7 +90,24 @@ class _MainWindowState extends State<MainWindow> {
         floatingActionButton: Container(
           height: ResponsiveTools.height(36),
           child: FloatingActionButton.extended(
-            onPressed: null,
+            onPressed: () {
+              Navigator.of(context).push(
+                  PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => WebsiteNameWindow(website: new Website(id: 1, name: "name", login: "login", cryptedPassword: "cryptedPassword"),),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var begin = Offset(0.0, 1.0);
+                        var end = Offset(0, 0);
+                        var tween = Tween(begin: begin, end: end);
+                        var offsetAnimation = animation.drive(tween);
+
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: child,
+                        );
+                      }
+                  )
+              );
+            },
             label: Text(
               "AJOUTER",
               style: TextStyle(
