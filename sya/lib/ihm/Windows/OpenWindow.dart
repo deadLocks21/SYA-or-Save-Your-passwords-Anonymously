@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sya/ihm/Tools/RedundantWidget.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
+import 'package:sya/ihm/Windows/PasswordWindow.dart';
 
 class OpenWindow extends StatefulWidget {
   OpenWindow({Key key}) : super(key: key);
@@ -22,7 +23,7 @@ class _OpenWindowState extends State<OpenWindow> with TickerProviderStateMixin {
         duration: const Duration(milliseconds: 500), vsync: this);
 
 
-    alpha = Tween(begin: 80.0, end: 346.0).animate(controller)
+    alpha = Tween(begin: 80.0, end: 349.0).animate(controller)
       ..addListener(() {setState(() {});});
 
     beta = Tween(begin: 25.0, end: 77.0).animate(controller)
@@ -30,15 +31,20 @@ class _OpenWindowState extends State<OpenWindow> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ResponsiveTools.initScreenUtils(context);
 
     return Scaffold(
-      body: GestureDetector(
-        onTap: () async {
-          await controller.forward();
-        },
-        child: Center(
+      body: Center(
+        child: InkWell(
+          onTap: transition,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -54,10 +60,15 @@ class _OpenWindowState extends State<OpenWindow> with TickerProviderStateMixin {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
 
-    controller.dispose();
+  void transition() async {
+    await controller.forward();
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => PasswordWindow(),
+      ),
+    );
   }
 }
+
