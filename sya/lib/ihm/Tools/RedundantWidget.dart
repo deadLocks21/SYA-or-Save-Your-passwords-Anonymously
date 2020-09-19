@@ -4,10 +4,19 @@ import 'package:sya/ihm/Widgets/RRaisedButton.dart';
 import 'ColorTools.dart';
 import 'ResponsiveTools.dart';
 
-class RedundantWidget {
-  static Widget welcommeIntoSYA() => Container(
-      margin: EdgeInsets.only(top: ResponsiveTools.height(77)),
-      height: ResponsiveTools.height(44),
+class WelcomeIntoSYA extends StatelessWidget {
+  double edgeTop;
+
+  WelcomeIntoSYA({this.edgeTop}){
+    if (edgeTop == null)
+      edgeTop = 77;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: ResponsiveTools.height(edgeTop)),
+      height: ResponsiveTools.height(48),
       child: Column(
         children: [
           Text.rich(
@@ -38,18 +47,25 @@ class RedundantWidget {
         ],
       ),
     );
+  }
+}
 
-  static Widget jokeBottom() => Container(
-    height: ResponsiveTools.height(48),
-    child: Text(
-      'Un Mot de passe pour les gouverner tous.\nUn Mot de passe pour tous les retrouver.',
-      style: TextStyle(
-        fontFamily: 'Roboto',
-        fontSize: ResponsiveTools.textSize(16),
-        color: const Color(0x4dffffff),
-        fontWeight: FontWeight.w500,
+class JokeBottom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: ResponsiveTools.height(48),
+      child: Text(
+        'Un Mot de passe pour les gouverner tous.\nUn Mot de passe pour tous les retrouver.',
+        style: TextStyle(
+          fontFamily: 'Roboto',
+          fontSize: ResponsiveTools.textSize(16),
+          color: const Color(0x4dffffff),
+          fontWeight: FontWeight.w500,
+        ),
+        textAlign: TextAlign.center,
       ),
-      textAlign: TextAlign.center,
-    ),
-  );
+    );
+  }
+
 }
