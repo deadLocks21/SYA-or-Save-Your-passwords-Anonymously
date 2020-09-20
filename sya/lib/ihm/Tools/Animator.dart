@@ -55,8 +55,6 @@ class Animator {
 
     this.right = right != null ? right : false;
     this.enter = enter != null ? enter : true;
-
-    print("enter $enter; right $right; this.enter ${this.enter}; this.right ${this.right}");
   }
 
 
