@@ -43,6 +43,8 @@ class _PasswordWindowState extends State<PasswordWindow>
 
   @override
   Widget build(BuildContext context) {
+    ResponsiveTools.initScreenUtils(context);
+
     return Scaffold(
       body: Center(
           child: SingleChildScrollView(
