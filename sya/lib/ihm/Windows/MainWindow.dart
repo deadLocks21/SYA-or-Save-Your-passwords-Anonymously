@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:sya/ihm/Tools/ColorTools.dart';
 import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
-import 'package:sya/ihm/Windows/InformationWindow.dart';
-import 'package:sya/ihm/Windows/WebsiteNameWindow.dart';
-import 'package:sya/ihm/Windows/WelcomeWindow.dart';
+import 'package:sya/ihm/Windows/AddNameWindow.dart';
 import 'package:sya/logic/Website.dart';
+
+import 'InformationWindow.dart';
 
 
 class MainWindow extends StatefulWidget {
@@ -24,29 +24,39 @@ class _MainWindowState extends State<MainWindow> {
     ResponsiveTools.initScreenUtils(context);
 
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: ResponsiveTools.height(48),
-          title: Container(
-            margin: EdgeInsets.only(left: ResponsiveTools.width(16)),
-            child: Text(
-              "Bienvenue dans SYA",
-              style: TextStyle(
-                  fontSize: ResponsiveTools.textSize(20),
-                  fontWeight: FontWeightType.MEDIUM,
-                  color: ColorTools.getTitleColor()
-              ),
-            ),
+        appBar: appBar(),
+
+        floatingActionButton: floatingActionButton(),
+
+        body: body()
+    );
+  }
+
+  /// Retourne le corps de la page avec la liste vers les différents sites.
+  Widget appBar() {
+    return AppBar(
+      toolbarHeight: ResponsiveTools.height(48),
+      title: Container(
+        margin: EdgeInsets.only(left: ResponsiveTools.width(16)),
+        child: Text(
+          "Bienvenue dans SYA",
+          style: TextStyle(
+              fontSize: ResponsiveTools.textSize(20),
+              fontWeight: FontWeightType.MEDIUM,
+              color: ColorTools.getTitleColor()
           ),
-          leading: Container(
-            width: ResponsiveTools.height(36),
-            child: IconButton(
-              icon: Icon(
-                Icons.power_settings_new,
-                color: ColorTools.getTitleColor(),
-                size: ResponsiveTools.height(24),
-              ),
-              onPressed: () {
-                Navigator.pushReplacement(
+        ),
+      ),
+      leading: Container(
+        width: ResponsiveTools.height(36),
+        child: IconButton(
+          icon: Icon(
+            Icons.power_settings_new,
+            color: ColorTools.getTitleColor(),
+            size: ResponsiveTools.height(24),
+          ),
+          onPressed: () {
+            /*Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation,) => WelcomeWindow(),
@@ -69,66 +79,25 @@ class _MainWindowState extends State<MainWindow> {
                             child: child,
                           ),
                     )
-                );
-              },
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(
-                  Icons.more_vert,
-                  color: ColorTools.getTitleColor(),
-                  size: ResponsiveTools.height(24),
-                )
-            ),
-            Container(
-              width: ResponsiveTools.width(16),
-            )
-          ],
+                );*/
+          },
         ),
-
-        floatingActionButton: Container(
-          height: ResponsiveTools.height(36),
-          child: FloatingActionButton.extended(
-            onPressed: () {
-              Navigator.of(context).push(
-                  PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => WebsiteNameWindow(website: new Website(id: null),),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        var begin = Offset(0.0, 1.0);
-                        var end = Offset(0, 0);
-                        var tween = Tween(begin: begin, end: end);
-                        var offsetAnimation = animation.drive(tween);
-
-                        return SlideTransition(
-                          position: offsetAnimation,
-                          child: child,
-                        );
-                      }
-                  )
-              );
-            },
-            label: Text(
-              "AJOUTER",
-              style: TextStyle(
-                fontSize: ResponsiveTools.textSize(20),
-                color: ColorTools.getTitleColor()
-              ),
-            ),
+      ),
+      actions: <Widget>[
+        IconButton(
             icon: Icon(
-              Icons.add,
-              size: ResponsiveTools.height(24),
+              Icons.more_vert,
               color: ColorTools.getTitleColor(),
-            ),
-            backgroundColor: ColorTools.getMainColor(),
-          ),
+              size: ResponsiveTools.height(24),
+            )
         ),
-
-        body: body()
+        Container(
+          width: ResponsiveTools.width(16),
+        )
+      ],
     );
   }
 
-  /// Retourne le corps de la page avec la liste vers les différents sites.
   Widget body(){
     content = new List();
     String firstLetter = "";  // Première lettre du mot.
@@ -152,7 +121,31 @@ class _MainWindowState extends State<MainWindow> {
     );
   }
 
-  Widget listTile(bool first, String text) => FlatButton(
+  Widget floatingActionButton() {
+    return Container(
+      height: ResponsiveTools.height(36),
+      child: FloatingActionButton.extended(
+        onPressed: addTransition,
+        label: Text(
+          "AJOUTER",
+          style: TextStyle(
+              fontSize: ResponsiveTools.textSize(20),
+              color: ColorTools.getTitleColor()
+          ),
+        ),
+        icon: Icon(
+          Icons.add,
+          size: ResponsiveTools.height(24),
+          color: ColorTools.getTitleColor(),
+        ),
+        backgroundColor: ColorTools.getMainColor(),
+      ),
+    );
+  }
+
+  /// Retourne une ligne bouton.
+  Widget listTile(bool first, String text) {
+    return FlatButton(
     child: Container(
       height: ResponsiveTools.height(48),
       child: Row(
@@ -189,10 +182,35 @@ class _MainWindowState extends State<MainWindow> {
           ResponsiveTools.width(16),
           ResponsiveTools.height(0)),
     ),
-    onPressed: () {
-      Navigator.of(context).push(
+    onPressed: itemTransition,
+  );
+  }
+
+
+  /// Transitions
+  void addTransition() {
+    Navigator.of(context).push(
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => InformationWindow(website: new Website(id: 0, name: "name", login: "login", cryptedPassword: "cryptedPassword"),),
+            pageBuilder: (context, animation, secondaryAnimation) => AddNameWindow(website: new Website(id: null),),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              var begin = Offset(0.0, 1.0);
+              var end = Offset(0, 0);
+              var tween = Tween(begin: begin, end: end);
+              var offsetAnimation = animation.drive(tween);
+
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            }
+        )
+    );
+  }
+
+  void itemTransition() {
+    Navigator.of(context).push(
+        PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => InformationWindow(website: new Website(id: 0, name: "name", login: "login", cryptedPassword: "cryptedPassword"),),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               var begin = Offset(1.0, 0.0);
               var end = Offset(0, 0);
@@ -205,7 +223,6 @@ class _MainWindowState extends State<MainWindow> {
               );
             }
         )
-      );
-    },
-  );
+    );
+  }
 }
