@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:sya/ihm/Tools/Animator.dart';
 import 'package:sya/ihm/Tools/ColorTools.dart';
 import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/RedundantWidget.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Widgets/RRaisedButton.dart';
 import 'package:sya/ihm/Windows/MainWindow.dart';
-import 'package:sya/ihm/Windows/WelcomeWindow.dart';
+import 'package:sya/ihm/Windows/PasswordWindow.dart';
+
 
 class VerificationWindow extends StatefulWidget{
   VerificationWindow({Key key}) : super(key: key);
@@ -16,42 +18,28 @@ class VerificationWindow extends StatefulWidget{
 
 class _VerificationWindowState extends State<VerificationWindow>
   with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<Offset> _offsetAnimationIn;
-  Animation<Offset> _offsetAnimationOut;
-  bool enter = true;
+  /// Object for control the differents animations.
+  Animator animator;
+  /// Value for the oppening of the UI
+  bool right;
+
+  _VerificationWindowState({this.right});
 
   @override
   void initState() {
-  super.initState();
+    super.initState();
 
-  _controller = AnimationController(
-  duration: const Duration(seconds: 1),
-  vsync: this,
-  )..forward(from: 0);
-
-  _offsetAnimationIn = Tween<Offset>(
-  begin: Offset(2, 0),
-  end: Offset(0, 0),
-  ).animate(CurvedAnimation(
-  parent: _controller,
-  curve: Curves.easeInOutBack,
-  ));
-
-  _offsetAnimationOut = Tween<Offset>(
-  begin: Offset(0, 0),
-  end: Offset(2, 0),
-  ).animate(CurvedAnimation(
-  parent: _controller,
-  curve: Curves.easeInOutBack,
-  ));
+    animator = new Animator(AnimationController(duration: const Duration(seconds: 1), vsync: this), right: right != null ? right : true, enter: true);
+    animator.play();
   }
 
   @override
   void dispose() {
-  super.dispose();
-  _controller.dispose();
+    super.dispose();
+
+    animator.disposeControler();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,112 +50,120 @@ class _VerificationWindowState extends State<VerificationWindow>
           child: SingleChildScrollView(
             child: Column(
               children: [
-                RedundantWidget.welcommeIntoSYA(),
-                SlideTransition(
-                  position: enter ? _offsetAnimationIn : _offsetAnimationOut,
-                  child: Container(
-                    height: ResponsiveTools.height(200),
-                    child: Column(
-                      children: [
-                        Container(
-                            margin: EdgeInsets.only(bottom: ResponsiveTools.height(36), top: ResponsiveTools.height(77)),
-                            child: Text(
-                              "Votre clé de vérification est\nxxxxxxxxxxxxxxxxxxxx",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: ResponsiveTools.textSize(20),
-                                fontWeight: FontWeightType.MEDIUM,
-                              ),
-                            )
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RRaisedButton(
-                              "RETOUR",
-                              color: ColorTools.getGoBackColor(),
-                              onPressed: () async {
-                                setState(() {
-                                  enter = !enter;
-                                });
-                                await _controller.forward(from: 0);
-
-                                Navigator.pushReplacement(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, animation1, animation2) => WelcomeWindow(),
-                                  ),
-                                );
-                              },
-                            ),
-                            Container(width: ResponsiveTools.width(54),),
-                            RRaisedButton(
-                              "CONNEXION",
-                              color: ColorTools.getMainColor(),
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (context, animation, secondaryAnimation,) => MainWindow(),
-                                      transitionsBuilder: (
-                                          context,
-                                          Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          Widget child,
-                                          ) =>
-                                          ScaleTransition(
-                                            scale: Tween<double>(
-                                              begin: 0.0,
-                                              end: 1.0,
-                                            ).animate(
-                                              CurvedAnimation(
-                                                parent: animation,
-                                                curve: Curves.fastOutSlowIn,
-                                              ),
-                                            ),
-                                            child: child,
-                                          ),
-                                    )
-                                );
-                              },
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    margin: EdgeInsets.only(bottom: ResponsiveTools.height(149)),
-                  ),
-                ),
-                RedundantWidget.jokeBottom()
+                WelcomeIntoSYA(),
+                body(),
+                JokeBottom()
               ],
             ),
           )
       ),
     );
   }
-}
 
-class ScaleRoute extends PageRouteBuilder {
-  final Widget page;
-  ScaleRoute({this.page}) : super(
-    pageBuilder: (context, animation, secondaryAnimation,) => page,
-    transitionsBuilder: (
-        context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,
-        ) =>
-        ScaleTransition(
-          scale: Tween<double>(
-            begin: 0.0,
-            end: 1.0,
-          ).animate(
-            CurvedAnimation(
-              parent: animation,
-              curve: Curves.fastOutSlowIn,
-            ),
-          ),
-          child: child,
+
+  /// Widgets for the body of the UI.
+  SlideTransition body() {
+    return SlideTransition(
+      position: animator.animation(),
+      child: Container(
+        height: ResponsiveTools.height(200),
+        child: Column(
+          children: [
+            displayVerifKey(),
+            bottomButtons()
+          ],
         ),
-  );
+        margin: EdgeInsets.only(bottom: ResponsiveTools.height(149)),
+      ),
+    );
+  }
+
+  Container displayVerifKey() {
+    return Container(
+        margin: EdgeInsets.only(bottom: ResponsiveTools.height(36), top: ResponsiveTools.height(77)),
+        child: Text(
+          "Votre clé de vérification est\nxxxxxxxxxxxxxxxxxxxx",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: ResponsiveTools.textSize(20),
+            fontWeight: FontWeightType.MEDIUM,
+          ),
+        )
+    );
+  }
+
+  Row bottomButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        returnButton(),
+        Container(width: ResponsiveTools.width(54),),
+        connexionButton(),
+      ],
+    );
+  }
+
+  RRaisedButton returnButton() {
+    return RRaisedButton(
+      "RETOUR",
+      color: ColorTools.getGoBackColor(),
+      onPressed: () async {
+        setState(() {
+          animator.enter = false;
+        });
+
+        await animator.play();
+
+        returnTransition();
+      },
+    );
+  }
+
+  RRaisedButton connexionButton() {
+    return RRaisedButton(
+      "CONNEXION",
+      color: ColorTools.getMainColor(),
+      onPressed: () {
+        connexionTransition();
+      },
+    );
+  }
+
+
+  /// Transitions
+  void returnTransition() {
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => PasswordWindow(right: false,),
+      ),
+    );
+  }
+
+  void connexionTransition() {
+    Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation,) => MainWindow(),
+          transitionsBuilder: (
+              context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+              ) =>
+              ScaleTransition(
+                scale: Tween<double>(
+                  begin: 0.0,
+                  end: 1.0,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.fastOutSlowIn,
+                  ),
+                ),
+                child: child,
+              ),
+        )
+    );
+  }
 }
