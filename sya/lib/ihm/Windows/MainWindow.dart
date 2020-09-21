@@ -4,6 +4,7 @@ import 'package:sya/ihm/Tools/ColorTools.dart';
 import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
 import 'package:sya/ihm/Windows/AddNameWindow.dart';
+import 'package:sya/ihm/Windows/OpenWindow.dart';
 import 'package:sya/logic/Website.dart';
 
 import 'InformationWindow.dart';
@@ -55,32 +56,7 @@ class _MainWindowState extends State<MainWindow> {
             color: ColorTools.getTitleColor(),
             size: ResponsiveTools.height(24),
           ),
-          onPressed: () {
-            /*Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation,) => WelcomeWindow(),
-                      transitionsBuilder: (
-                          context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                          Widget child,
-                          ) =>
-                          ScaleTransition(
-                            scale: Tween<double>(
-                              begin: 0.0,
-                              end: 1.0,
-                            ).animate(
-                              CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.fastOutSlowIn,
-                              ),
-                            ),
-                            child: child,
-                          ),
-                    )
-                );*/
-          },
+          onPressed: deconnectionTransition,
         ),
       ),
       actions: <Widget>[
@@ -191,7 +167,7 @@ class _MainWindowState extends State<MainWindow> {
   void addTransition() {
     Navigator.of(context).push(
         PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => AddNameWindow(website: new Website(id: null),),
+            pageBuilder: (context, animation, secondaryAnimation) => AddNameWindow(website: new Website(id: null), right: true,),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               var begin = Offset(0.0, 1.0);
               var end = Offset(0, 0);
@@ -222,6 +198,33 @@ class _MainWindowState extends State<MainWindow> {
                 child: child,
               );
             }
+        )
+    );
+  }
+
+  void deconnectionTransition() {
+    Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation,) => OpenWindow(),
+          transitionsBuilder: (
+              context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+              ) =>
+              ScaleTransition(
+                scale: Tween<double>(
+                  begin: 0.0,
+                  end: 1.0,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.fastOutSlowIn,
+                  ),
+                ),
+                child: child,
+              ),
         )
     );
   }
