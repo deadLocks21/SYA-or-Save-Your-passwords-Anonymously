@@ -1,3 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:sya/database/WebsitesDao.dart';
+import 'package:sya/logic/Security.dart';
+import 'package:sya/logic/User.dart';
+
 /// Class used to store a website
 class Website {
   /// Id of the row in the DB.

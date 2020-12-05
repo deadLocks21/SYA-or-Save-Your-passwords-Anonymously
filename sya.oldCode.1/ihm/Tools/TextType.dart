@@ -1,0 +1,4 @@
+enum TextType {
+  TEXT,
+  TITLE
+}

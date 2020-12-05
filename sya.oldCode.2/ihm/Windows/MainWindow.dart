@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:sya/ihm/Tools/ColorTools.dart';
 import 'package:sya/ihm/Tools/FontWeightType.dart';
 import 'package:sya/ihm/Tools/ResponsiveTools.dart';
+import 'package:sya/ihm/Windows/AddNameWindow.dart';
+import 'package:sya/ihm/Windows/OpenWindow.dart';
+import 'package:sya/logic/Website.dart';
+
+import 'InformationWindow.dart';
 
 
 class MainWindow extends StatefulWidget {
@@ -51,7 +56,7 @@ class _MainWindowState extends State<MainWindow> {
             color: ColorTools.getTitleColor(),
             size: ResponsiveTools.height(24),
           ),
-          onPressed: null,
+          onPressed: deconnectionTransition,
         ),
       ),
       actions: <Widget>[
@@ -96,7 +101,7 @@ class _MainWindowState extends State<MainWindow> {
     return Container(
       height: ResponsiveTools.height(36),
       child: FloatingActionButton.extended(
-        onPressed: null,
+        onPressed: addTransition,
         label: Text(
           "AJOUTER",
           style: TextStyle(
@@ -153,7 +158,74 @@ class _MainWindowState extends State<MainWindow> {
           ResponsiveTools.width(16),
           ResponsiveTools.height(0)),
     ),
-    onPressed: null,
+    onPressed: itemTransition,
   );
+  }
+
+
+  /// Transitions
+  void addTransition() {
+    Navigator.of(context).push(
+        PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => AddNameWindow(website: new Website(id: null), right: true,),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              var begin = Offset(0.0, 1.0);
+              var end = Offset(0, 0);
+              var tween = Tween(begin: begin, end: end);
+              var offsetAnimation = animation.drive(tween);
+
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            }
+        )
+    );
+  }
+
+  void itemTransition() {
+    Navigator.of(context).push(
+        PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => InformationWindow(website: new Website(id: 0, name: "name", login: "login", cryptedPassword: "cryptedPassword"),),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              var begin = Offset(1.0, 0.0);
+              var end = Offset(0, 0);
+              var tween = Tween(begin: begin, end: end);
+              var offsetAnimation = animation.drive(tween);
+
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            }
+        )
+    );
+  }
+
+  void deconnectionTransition() {
+    Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation,) => OpenWindow(),
+          transitionsBuilder: (
+              context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+              ) =>
+              ScaleTransition(
+                scale: Tween<double>(
+                  begin: 0.0,
+                  end: 1.0,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.fastOutSlowIn,
+                  ),
+                ),
+                child: child,
+              ),
+        )
+    );
   }
 }
