@@ -6,6 +6,7 @@ class FAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
   Container(
+    margin: EdgeInsets.only(right: ResponsiveTools.width(16), bottom: ResponsiveTools.height(16)),
     height: ResponsiveTools.height(36),
     child: FloatingActionButton.extended(
       onPressed: null,

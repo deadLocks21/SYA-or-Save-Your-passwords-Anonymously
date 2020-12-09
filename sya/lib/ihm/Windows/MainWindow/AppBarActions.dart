@@ -8,6 +8,7 @@ class AppBarActions extends StatelessWidget {
   Container(
     margin: EdgeInsets.only(right: ResponsiveTools.width(16)),
     child: IconButton(
+      onPressed: null,
       icon: Icon(
         Icons.more_vert,
         color: ColorTools.getTitleColor(),
