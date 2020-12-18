@@ -1,3 +1,3 @@
 # SYA-or-Save-Your-passwords-Anonymously
-Application mobile de sauvegarde de mots de passes.
-En pause à cause d'un DUT un peu trop prenant.
+<p>Application mobile de sauvegarde de mots de passes.</p>
+<p>En pause à cause d'un DUT un peu trop prenant.</p>
